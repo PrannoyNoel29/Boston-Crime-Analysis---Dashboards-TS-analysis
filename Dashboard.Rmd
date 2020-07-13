@@ -1,0 +1,372 @@
+---
+title: "Year"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: ['twitter', 'facebook']
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(highcharter) # Interactive data visualizations
+library(plotly) # Interactive data visualizations
+library(viridis) # Color gradients
+library(tidyverse) # Metapackge
+library(countrycode) # Converts country names/codes
+library(crosstalk) # Provides interactivity for HTML widgets
+library(DT) # Displaying data tables
+library(leaflet)
+```
+
+```{r}
+data = read.csv('/Users/prannoynoel/Documents/BA/Big Data Analytics/crimes-in-boston/crime.csv')
+```
+
+```{r}
+mycolors = c('blue', '#FFC125', 'darkgreen', 'darkorange')
+```
+
+```{r}
+data_2015 <- data %>%
+  filter(YEAR == 2015)
+data_2016 <- data %>%
+  filter(YEAR == 2016)
+data_2017 <- data %>%
+  filter(YEAR == 2017)
+data_2018 <- data %>%
+  filter(YEAR == 2018)
+```
+2015
+==============================
+
+Row
+------------------------------
+
+### Analysis
+```{r}
+valueBox(paste('Boston-Crimes'),
+         color = 'warning')
+```
+
+### Total-crimes
+```{r}
+valueBox(length(data_2015$INCIDENT_NUMBER),
+         icon = 'fa-user')
+```
+
+### UCR-1
+```{r}
+valueBox( sum(data_2015$UCR_PART=='Part One'),
+          icon = NULL,
+          color = "red")
+```
+
+### UCR-2
+```{r}
+valueBox( sum(data_2015$UCR_PART=='Part Two'),
+          icon = NULL,
+          color = "orange")
+```
+
+### UCR-3
+```{r}
+valueBox( sum(data_2015$UCR_PART=='Part Three'),
+          icon = NULL,
+          color = "green")
+```
+
+Column {.tabset .tabset-fade data-width=700 .colored }
+-----------------------------------------------------------------------
+
+### Street Wise Crime
+
+```{r}
+date_2015_STREET <- data_2015 %>% select(STREET) %>%
+  group_by(STREET) %>%
+  filter(!is.na(STREET)) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2015_STREET, "column", hcaes(x = STREET, y = Events))
+```
+
+### OFFENSE
+
+```{r}
+date_2015_OFG <- data_2015 %>% select(OFFENSE_CODE_GROUP) %>%
+  group_by(OFFENSE_CODE_GROUP) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2015_OFG, "column", hcaes(x = OFFENSE_CODE_GROUP, y = Events))
+```
+
+### DAY WISE  CRIME 
+```{r}
+date_2015_DAY <-data_2015 %>% select(DAY_OF_WEEK) %>%
+  group_by(DAY_OF_WEEK) %>%
+  summarize(Events = n())%>%
+  arrange(desc(Events))
+hchart(date_2015_DAY, "column", hcaes(x = DAY_OF_WEEK, y = Events))
+```
+
+### HOUR WISE CRIME 
+
+```{r}
+date_2015_HOUR <-data_2015 %>% select(HOUR) %>%
+  group_by(HOUR) %>%
+  summarize(Events = n())
+hchart(date_2015_HOUR, "column", hcaes(x = HOUR, y = Events))
+```
+
+2016
+==============================
+
+Row
+------------------------------
+
+### Analysis
+```{r}
+valueBox(paste('Boston-Crimes'),
+         color = 'warning')
+```
+
+### Total-crimes
+```{r}
+valueBox(length(data_2016$INCIDENT_NUMBER),
+         icon = 'fa-user')
+```
+
+### UCR-1
+```{r}
+valueBox( sum(data_2016$UCR_PART=='Part One'),
+          icon = NULL,
+          color = "red")
+```
+
+### UCR-2
+```{r}
+valueBox( sum(data_2016$UCR_PART=='Part Two'),
+          icon = NULL,
+          color = "orange")
+```
+
+### UCR-3
+```{r}
+valueBox( sum(data_2016$UCR_PART=='Part Three'),
+          icon = NULL,
+          color = "green")
+```
+
+Column {.tabset .tabset-fade data-width=700 .colored }
+-----------------------------------------------------------------------
+
+### Street Wise Crime
+
+```{r}
+date_2016_STREET <- data_2016 %>% select(STREET) %>%
+  group_by(STREET) %>%
+  filter(!is.na(STREET)) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2016_STREET, "column", hcaes(x = STREET, y = Events))
+```
+
+### OFFENSE
+
+```{r}
+date_2016_OFG <- data_2016 %>% select(OFFENSE_CODE_GROUP) %>%
+  group_by(OFFENSE_CODE_GROUP) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2016_OFG, "column", hcaes(x = OFFENSE_CODE_GROUP, y = Events))
+```
+
+### DAY WISE  CRIME 
+```{r}
+date_2016_DAY <-data_2016 %>% select(DAY_OF_WEEK) %>%
+  group_by(DAY_OF_WEEK) %>%
+  summarize(Events = n())%>%
+  arrange(desc(Events))
+hchart(date_2016_DAY, "column", hcaes(x = DAY_OF_WEEK, y = Events))
+```
+
+### HOUR WISE CRIME 
+
+```{r}
+date_2016_HOUR <-data_2016 %>% select(HOUR) %>%
+  group_by(HOUR) %>%
+  summarize(Events = n())
+hchart(date_2016_HOUR, "column", hcaes(x = HOUR, y = Events))
+```
+
+
+2017
+==============================
+
+Row
+------------------------------
+
+### Analysis
+```{r}
+valueBox(paste('Boston-Crimes'),
+         color = 'warning')
+```
+
+### Total-crimes
+```{r}
+valueBox(length(data_2017$INCIDENT_NUMBER),
+         icon = 'fa-user')
+```
+
+### UCR-1
+```{r}
+valueBox( sum(data_2017$UCR_PART=='Part One'),
+          icon = NULL,
+          color = "red")
+```
+
+### UCR-2
+```{r}
+valueBox( sum(data_2017$UCR_PART=='Part Two'),
+          icon = NULL,
+          color = "orange")
+```
+
+### UCR-3
+```{r}
+valueBox( sum(data_2017$UCR_PART=='Part Three'),
+          icon = NULL,
+          color = "green")
+```
+
+Column {.tabset .tabset-fade data-width=700 .colored }
+-----------------------------------------------------------------------
+
+### Street Wise Crime
+
+```{r}
+date_2017_STREET <- data_2017 %>% select(STREET) %>%
+  group_by(STREET) %>%
+  filter(!is.na(STREET)) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2017_STREET, "column", hcaes(x = STREET, y = Events))
+```
+
+### OFFENSE
+
+```{r}
+date_2017_OFG <- data_2017 %>% select(OFFENSE_CODE_GROUP) %>%
+  group_by(OFFENSE_CODE_GROUP) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2017_OFG, "column", hcaes(x = OFFENSE_CODE_GROUP, y = Events))
+```
+
+### DAY WISE  CRIME 
+```{r}
+date_2017_DAY <-data_2017 %>% select(DAY_OF_WEEK) %>%
+  group_by(DAY_OF_WEEK) %>%
+  summarize(Events = n())%>%
+  arrange(desc(Events))
+hchart(date_2017_DAY, "column", hcaes(x = DAY_OF_WEEK, y = Events))
+```
+
+### HOUR WISE CRIME 
+
+```{r}
+date_2017_HOUR <-data_2017 %>% select(HOUR) %>%
+  group_by(HOUR) %>%
+  summarize(Events = n())
+hchart(date_2017_HOUR, "column", hcaes(x = HOUR, y = Events))
+```
+
+2018
+==============================
+
+Row
+------------------------------
+
+### Analysis
+```{r}
+valueBox(paste('Boston-Crimes'),
+         color = 'warning')
+```
+
+### Total-crimes
+```{r}
+valueBox(length(data_2018$INCIDENT_NUMBER),
+         icon = 'fa-user')
+```
+
+### UCR-1
+```{r}
+valueBox( sum(data_2018$UCR_PART=='Part One'),
+          icon = NULL,
+          color = "red")
+```
+
+### UCR-2
+```{r}
+valueBox( sum(data_2018$UCR_PART=='Part Two'),
+          icon = NULL,
+          color = "orange")
+```
+
+### UCR-3
+```{r}
+valueBox( sum(data_2018$UCR_PART=='Part Three'),
+          icon = NULL,
+          color = "green")
+```
+
+Column {.tabset .tabset-fade data-width=700 .colored }
+-----------------------------------------------------------------------
+
+### Street Wise Crime
+
+```{r}
+date_2018_STREET <- data_2018 %>% select(STREET) %>%
+  group_by(STREET) %>%
+  filter(!is.na(STREET)) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2018_STREET, "column", hcaes(x = STREET, y = Events))
+```
+
+### OFFENSE
+
+```{r}
+date_2018_OFG <- data_2018 %>% select(OFFENSE_CODE_GROUP) %>%
+  group_by(OFFENSE_CODE_GROUP) %>%
+  summarize(Events = n()) %>%
+  arrange(desc(Events))%>%
+  head(n=30)
+hchart(date_2018_OFG, "column", hcaes(x = OFFENSE_CODE_GROUP, y = Events))
+```
+
+### DAY WISE  CRIME 
+```{r}
+date_2018_DAY <-data_2018 %>% select(DAY_OF_WEEK) %>%
+  group_by(DAY_OF_WEEK) %>%
+  summarize(Events = n())%>%
+  arrange(desc(Events))
+hchart(date_2018_DAY, "column", hcaes(x = DAY_OF_WEEK, y = Events))
+```
+
+### HOUR WISE CRIME 
+
+```{r}
+date_2018_HOUR <-data_2018 %>% select(HOUR) %>%
+  group_by(HOUR) %>%
+  summarize(Events = n())
+hchart(date_2018_HOUR, "column", hcaes(x = HOUR, y = Events))
+```
